@@ -68,6 +68,37 @@
                       label="Tables"
                     />
                   </v-col>
+                  <v-col
+                  cols="12"
+                  sm="6"
+                  md="4"
+                >
+                  <span>Attach tables</span>
+                  <v-checkbox
+                    v-model="editedItem.table1"
+                    label="Table 1"
+                  />
+                  <v-checkbox
+                    v-model="editedItem.table2"
+                    label="Table 2"
+                  />
+                  <v-checkbox
+                    v-model="editedItem.table3"
+                    label="Table 3"
+                  />
+                </v-col>
+                </v-row>
+                <v-row>
+                <v-col
+                  cols="12"
+                  sm="6"
+                  md="4"
+                >
+                   <v-btn v-model="editedItem.image"
+                    label="add-image">
+                     Add Image
+                   </v-btn>
+                </v-col>
                 </v-row>
               </v-container>
             </v-card-text>
@@ -134,10 +165,24 @@
       </v-btn>
     </template>
     <template #[`item.status`]="{ item }">
-      <v-simple-checkbox
-        v-model="item.status"
-        color="green"
-      />
+      <v-chip v-model="item.status"
+        :color="item.status ? 'green lighten-2' : 'red lighten-2'"
+        @click="editStatus(item)"
+      >{{ item.status ? 'Enabled' : 'Disabled' }}
+      </v-chip>
+    </template>
+    <template #[`item.image`]="{ item }">
+      <v-icon
+        small
+        class="mr-2"
+        @click="picVisible=!picVisible"
+      >
+        mdi-eye
+      </v-icon>
+      <v-overlay v-model="picVisible"
+        scroll-strategy="close">
+        <img :src="item.image"/>
+      </v-overlay>
     </template>
   </v-data-table>
 </template>
@@ -148,6 +193,7 @@ export default {
   data: () => ({
     dialog: false,
     dialogDelete: false,
+    picVisible: false,
     headers: [
       {
         text: 'Product',
@@ -158,7 +204,8 @@ export default {
       { text: 'Description', align: 'center', value: 'description', sortable: false },
       { text: 'Number of Tables', align: 'center', value: 'tables' },
       { text: 'Status', align: 'center', value: 'status', sortable: false },
-      { text: 'Actions', align: 'center', value: 'actions', sortable: false }
+      { text: 'Actions', align: 'center', value: 'actions', sortable: false },
+      { text: 'Image', align: 'center', value: 'image', sortable: false }
     ],
     products: [],
     editedIndex: -1,
@@ -166,13 +213,21 @@ export default {
       name: '',
       tables: 0,
       description: '',
-      status: false
+      status: false,
+      table1: false,
+      table2: false,
+      table3: false,
+      image: ''
     },
     defaultItem: {
       name: '',
       tables: 0,
       description: '',
-      status: false
+      status: false,
+      table1: false,
+      table2: false,
+      table3: false,
+      image: ''
     }
   }),
 
@@ -202,13 +257,22 @@ export default {
           name: 'CCTV cables',
           tables: 1,
           description: 'CCTV cables',
-          status: false
+          status: false,
+          table1: true,
+          table2: false,
+          table3: false,
+          image: 'https://cdn.britannica.com/39/7139-050-A88818BB/Himalayan-chocolate-point.jpg'
+
         },
         {
           name: 'Harness Wires',
           tables: 2,
           description: 'Harness Wires',
-          status: true
+          status: true,
+          table1: true,
+          table2: false,
+          table3: true,
+          image: 'https://cdn.britannica.com/39/7139-050-A88818BB/Himalayan-chocolate-point.jpg'
         }
       ]
     },
@@ -256,7 +320,7 @@ export default {
     },
 
     editStatus (item) {
-      this.dialogStatus = true
+      item.status = !item.status
     }
   }
 }
