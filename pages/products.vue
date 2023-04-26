@@ -4,7 +4,7 @@
     :items="products"
     sort-by="products"
     class="elevation-3"
-    >
+  >
     <template #top>
       <v-toolbar
         flat
@@ -84,12 +84,16 @@
                   <v-col
                     cols="12"
                     sm="6"
-                    md="4"
+                    md="8"
                   >
-                    <v-btn v-model="editedItem.image"
-                      label="add-image">
-                      Add Image
-                    </v-btn>
+                    <v-file-input
+                      v-model="editedItem.image"
+                      label="Add Image"
+                      show-size
+                      counter
+                      single
+                      accept="image/*"
+                    />
                   </v-col>
                 </v-row>
               </v-container>
@@ -157,10 +161,12 @@
       </v-btn>
     </template>
     <template #[`item.status`]="{ item }">
-      <v-chip v-model="item.status"
+      <v-chip
+        v-model="item.status"
         :color="item.status ? 'green lighten-2' : 'red lighten-2'"
         @click="editStatus(item)"
-      >{{ item.status ? 'Enabled' : 'Disabled' }}
+      >
+        {{ item.status ? 'Enabled' : 'Disabled' }}
       </v-chip>
     </template>
     <template #[`item.image`]="{ item }">
@@ -171,10 +177,11 @@
       >
         mdi-eye
       </v-icon>
-      <v-overlay v-model="picVisible"
-        scroll-strategy="close"
-        @click="picVisible=!picVisible">
-        <img :src="item.image"/>
+      <v-overlay
+        v-model="picVisible"
+        @click="picVisible=!picVisible"
+      >
+        <img :src="item.image">
       </v-overlay>
     </template>
   </v-data-table>
@@ -196,9 +203,9 @@ export default {
       },
       { text: 'Description', align: 'center', value: 'description', sortable: false },
       { text: 'Number of Tables', align: 'center', value: 'tables' },
-      { text: 'Table 1', align: 'center', value: 'table1' },
-      { text: 'Table 2', align: 'center', value: 'table2' },
-      { text: 'Table 3', align: 'center', value: 'table3' },
+      { text: 'Table 1', align: 'center', value: 'table1', sortable: false },
+      { text: 'Table 2', align: 'center', value: 'table2', sortable: false },
+      { text: 'Table 3', align: 'center', value: 'table3', sortable: false },
       { text: 'Status', align: 'center', value: 'status', sortable: false },
       { text: 'Actions', align: 'center', value: 'actions', sortable: false },
       { text: 'Image', align: 'center', value: 'image', sortable: false }

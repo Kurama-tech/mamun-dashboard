@@ -19,7 +19,9 @@
     "vue": "^2.7.10",
     "vue-server-renderer": "^2.7.10",
     "vue-template-compiler": "^2.7.10",
-    "vuetify": "^2.6.10"
+    "vue-xlsx": "^0.2.1",
+    "vuetify": "^2.6.10",
+    "xlsx": "https://cdn.sheetjs.com/xlsx-0.19.3/xlsx-0.19.3.tgz"
   },
   "devDependencies": {
     "@babel/eslint-parser": "^7.19.1",
