@@ -3,8 +3,8 @@
     :headers="headers"
     :items="products"
     sort-by="products"
-    class="elevation-1"
-  >
+    class="elevation-3"
+    >
     <template #top>
       <v-toolbar
         flat
@@ -51,54 +51,46 @@
                   <v-col
                     cols="12"
                     sm="6"
-                    md="4"
+                    md="8"
                   >
                     <v-text-field
                       v-model="editedItem.description"
                       label="Description"
                     />
                   </v-col>
+                </v-row>
+                <v-row>
                   <v-col
                     cols="12"
                     sm="6"
                     md="4"
                   >
-                    <v-text-field
-                      v-model="editedItem.tables"
-                      label="Tables"
+                    <span>Attach tables</span>
+                    <v-checkbox
+                      v-model="editedItem.table1"
+                      label="Table 1"
+                    />
+                    <v-checkbox
+                      v-model="editedItem.table2"
+                      label="Table 2"
+                    />
+                    <v-checkbox
+                      v-model="editedItem.table3"
+                      label="Table 3"
                     />
                   </v-col>
-                  <v-col
-                  cols="12"
-                  sm="6"
-                  md="4"
-                >
-                  <span>Attach tables</span>
-                  <v-checkbox
-                    v-model="editedItem.table1"
-                    label="Table 1"
-                  />
-                  <v-checkbox
-                    v-model="editedItem.table2"
-                    label="Table 2"
-                  />
-                  <v-checkbox
-                    v-model="editedItem.table3"
-                    label="Table 3"
-                  />
-                </v-col>
                 </v-row>
                 <v-row>
-                <v-col
-                  cols="12"
-                  sm="6"
-                  md="4"
-                >
-                   <v-btn v-model="editedItem.image"
-                    label="add-image">
-                     Add Image
-                   </v-btn>
-                </v-col>
+                  <v-col
+                    cols="12"
+                    sm="6"
+                    md="4"
+                  >
+                    <v-btn v-model="editedItem.image"
+                      label="add-image">
+                      Add Image
+                    </v-btn>
+                  </v-col>
                 </v-row>
               </v-container>
             </v-card-text>
@@ -175,12 +167,13 @@
       <v-icon
         small
         class="mr-2"
-        @click="picVisible=!picVisible"
+        @mouseover="picVisible=!picVisible"
       >
         mdi-eye
       </v-icon>
       <v-overlay v-model="picVisible"
-        scroll-strategy="close">
+        scroll-strategy="close"
+        @click="picVisible=!picVisible">
         <img :src="item.image"/>
       </v-overlay>
     </template>
@@ -189,7 +182,7 @@
 
 <script>
 export default {
-  name: 'InspirePage',
+  name: 'ProductsPage',
   data: () => ({
     dialog: false,
     dialogDelete: false,
@@ -203,6 +196,9 @@ export default {
       },
       { text: 'Description', align: 'center', value: 'description', sortable: false },
       { text: 'Number of Tables', align: 'center', value: 'tables' },
+      { text: 'Table 1', align: 'center', value: 'table1' },
+      { text: 'Table 2', align: 'center', value: 'table2' },
+      { text: 'Table 3', align: 'center', value: 'table3' },
       { text: 'Status', align: 'center', value: 'status', sortable: false },
       { text: 'Actions', align: 'center', value: 'actions', sortable: false },
       { text: 'Image', align: 'center', value: 'image', sortable: false }
