@@ -14,7 +14,7 @@
 </template>
 
 <script>
-const XLSX = require('xlsx')
+import XLSX from 'xlsx'
 
 export default {
   data () {
