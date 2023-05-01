@@ -184,6 +184,33 @@
         <img :src="item.image">
       </v-overlay>
     </template>
+    <template #[`item.table1`]="{ item }">
+      <v-chip
+        v-model="item.table1"
+        :color="item.table1 ? 'green lighten-2' : 'red lighten-2'"
+        href="/editTable"
+      >
+        {{ item.table1 ? 'true' : 'false' }}
+      </v-chip>
+    </template>
+    <template #[`item.table2`]="{ item }">
+      <v-chip
+        v-model="item.table2"
+        :color="item.table2 ? 'green lighten-2' : 'red lighten-2'"
+        href="/editTable"
+      >
+        {{ item.table2 ? 'true' : 'false' }}
+      </v-chip>
+    </template>
+    <template #[`item.table3`]="{ item }">
+      <v-chip
+        v-model="item.table3"
+        :color="item.table3 ? 'green lighten-2' : 'red lighten-2'"
+        href="/editTable"
+      >
+        {{ item.table3 ? 'true' : 'false' }}
+      </v-chip>
+    </template>
   </v-data-table>
 </template>
 

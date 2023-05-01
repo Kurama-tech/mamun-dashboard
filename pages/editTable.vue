@@ -3,10 +3,10 @@
     <input type="file" @change="handleFileUpload">
     <vue-excel-editor
       v-if="showEditor"
+      ref="grid"
+      v-model="jsondata"
       :options="options"
       @workbook-updated="handleWorkbookUpdated"
-      v-model="jsondata"
-      ref="grid"
     />
     <button v-if="showEditor" @click="handleSaveFile">
       Save File
@@ -63,7 +63,7 @@ export default {
       const worksheet = this.workbook.Sheets[sheetName]
       const wb = XLSX.utils.book_new()
       XLSX.utils.book_append_sheet(wb, worksheet, sheetName)
-      this.$refs.grid.exportTable('xlsx', false, 'rr')
+      this.$refs.grid.exportTable('xlsx', false, sheetName)
     }
   }
 }

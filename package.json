@@ -20,6 +20,7 @@
     "nuxt": "^2.15.8",
     "vue": "^2.7.10",
     "vue-excel-editor": "^1.5.19",
+    "vue-router": "^3.6.5",
     "vue-server-renderer": "^2.7.10",
     "vue-template-compiler": "^2.7.10",
     "vue-xlsx": "^0.2.1",
