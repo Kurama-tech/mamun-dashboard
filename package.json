@@ -17,6 +17,7 @@
     "convert-excel-to-json": "^1.7.0",
     "core-js": "^3.25.3",
     "file-saver": "^2.0.5",
+    "lodash": "^4.17.21",
     "nuxt": "^2.15.8",
     "vue": "^2.7.10",
     "vue-excel-editor": "^1.5.19",
@@ -24,8 +25,7 @@
     "vue-server-renderer": "^2.7.10",
     "vue-template-compiler": "^2.7.10",
     "vue-xlsx": "^0.2.1",
-    "vuetify": "^2.6.10",
-    "xlsx": "https://cdn.sheetjs.com/xlsx-0.19.3/xlsx-0.19.3.tgz"
+    "vuetify": "^2.6.10"
   },
   "devDependencies": {
     "@babel/eslint-parser": "^7.19.1",

@@ -3,43 +3,24 @@
     <v-row>
       <v-col cols="12" md="4" />
       <v-col cols="12" md="4">
-        <v-form
-          ref="form"
-          v-model="valid"
-          lazy-validation
-        >
+        <v-form ref="form" v-model="valid" lazy-validation>
           <v-card class="text-center">
             <br>
-            <v-img
-              contain
-              height="200"
-              src="https://firebasestorage.googleapis.com/v0/b/mamun-public.appspot.com/o/Mamoon-2.png?alt=media&token=ddd01f63-860c-44c4-af00-ea9a9b314cc9"
-            />
+            <v-img contain height="200"
+              src="https://firebasestorage.googleapis.com/v0/b/mamun-public.appspot.com/o/Mamoon-2.png?alt=media&token=ddd01f63-860c-44c4-af00-ea9a9b314cc9" />
             <v-card-title>Login - JWC</v-card-title>
             <v-card-text>
               <!-- Card content goes here -->
 
-              <v-text-field
-                v-model="email"
-                :rules="emailRules"
-                label="E-mail"
-                required
-              />
-              <v-text-field
-                v-model="password"
-                type="password"
-                label="Password"
-                required
-              />
+              <v-text-field v-model="email" :rules="emailRules" label="E-mail" required />
+              <v-text-field v-model="password" type="password" label="Password" required />
+              <v-alert v-if="iserror" dense outlined type="error">
+               {{ errorStr }}
+              </v-alert>
             </v-card-text>
             <v-card-actions>
               <v-spacer />
-              <v-btn
-                color="info"
-                rounded
-                block
-                @click="validate"
-              >
+              <v-btn color="info" rounded block @click="validate">
                 Login
               </v-btn>
             </v-card-actions>
@@ -67,15 +48,30 @@ export default {
       v => /.+@.+\..+/.test(v) || 'E-mail must be valid'
     ]
   }),
+  computed: {
+    iserror() {
+      return this.$store.state.showauthErr
+    },
+    errorStr() {
+      return this.$store.state.authErr
+    }
+  },
 
   methods: {
-    validate () {
-      this.$refs.form.validate()
+    async validate() {
+      if (this.$refs.form.validate()) {
+        let data = {
+          username: this.email,
+          password: this.password
+        }
+        await this.$store.dispatch("login", data)
+        //this.$router.push({path: '/' })
+      }
     },
-    reset () {
+    reset() {
       this.$refs.form.reset()
     },
-    resetValidation () {
+    resetValidation() {
       this.$refs.form.resetValidation()
     }
   }

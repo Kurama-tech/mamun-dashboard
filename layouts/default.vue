@@ -50,11 +50,18 @@
       </v-btn> -->
       <v-toolbar-title>{{ title }}</v-toolbar-title>
       <v-spacer />
-      <v-btn
+      <!-- <v-btn
         icon
         @click.stop="rightDrawer = !rightDrawer"
       >
         <v-icon>mdi-menu</v-icon>
+      </v-btn> -->
+
+      <v-btn
+        icon
+        @click.stop="logout"
+      >
+        <v-icon>mdi-logout</v-icon>
       </v-btn>
     </v-app-bar>
     <v-main>
@@ -62,7 +69,7 @@
         <Nuxt />
       </v-container>
     </v-main>
-    <v-navigation-drawer
+    <!-- <v-navigation-drawer
       v-model="rightDrawer"
       :right="right"
       temporary
@@ -78,7 +85,7 @@
           <v-list-item-title>Switch drawer (click me)</v-list-item-title>
         </v-list-item>
       </v-list>
-    </v-navigation-drawer>
+    </v-navigation-drawer> -->
     <v-footer
       :absolute="!fixed"
       app
@@ -99,20 +106,48 @@ export default {
       items: [
         {
           icon: 'mdi-apps',
-          title: 'Welcome',
+          title: 'Dashboard',
           to: '/'
+        },
+        {
+          icon: 'mdi-home-edit',
+          title: 'Home Page',
+          to: '/home'
         },
         {
           icon: 'mdi-chart-bubble',
           title: 'Products',
           to: '/products'
+        },
+        {
+          icon: 'mdi-table',
+          title: 'Tables',
+          to: '/tables'
         }
       ],
       miniVariant: true,
       right: true,
       rightDrawer: false,
-      title: 'Vuetify.js'
+      title: 'JWC Dashboard'
     }
-  }
+  },
+  methods: {
+    logout(){
+      this.$store.dispatch("logout")
+    }
+  },
+  watch: {
+    watch: {
+    '$cookies.jwt': {
+      handler(newJwtValue) {
+        if (!newJwtValue) {
+          // Redirect to the login page if the "jwt" cookie doesn't exist
+          this.$router.push('/login');
+        }
+      },
+      immediate: true, // Run the handler immediately on component initialization
+    },
+  },
+  },
 }
 </script>

@@ -53,6 +53,7 @@ export default {
       const sheetName = workbook.SheetNames[0]
       const sheet = workbook.Sheets[sheetName]
       this.jsondata = XLSX.utils.sheet_to_json(sheet)
+      console.log(this.jsondata)
       this.workbook = workbook
     },
     handleSaveFile () {
