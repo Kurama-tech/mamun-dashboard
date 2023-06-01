@@ -5,7 +5,7 @@ services:
     restart: always
     labels:
       - traefik.backend=jwcbackend
-      - traefik.frontend.rule=Host:jwc-api.mamun.cloud
+      - traefik.frontend.rule=Host:jwc-backend.mamun.cloud
       - traefik.docker.network=web
       - traefik.port=8001
     networks:
