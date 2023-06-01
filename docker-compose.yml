@@ -9,12 +9,12 @@ services:
       - traefik.docker.network=web
       - traefik.port=8001
     networks:
-      - internal
-      - web
+     - internal
+     - web
     ports:
       - "8001:8001"
 networks:
-  web:
-    external: true
-  internal:
-    external: false
+ web:
+   external: true
+ internal:
+   external: false

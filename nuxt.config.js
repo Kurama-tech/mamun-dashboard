@@ -1,6 +1,10 @@
 
 export default {
   // Global page headers: https://go.nuxtjs.dev/config-head
+  server: {
+    port: 8001, // Set the port to 8001
+    host: '0.0.0.0', // Allow connections from outside the container
+  },
   head: {
     titleTemplate: '%s - admin-dashboard',
     title: 'admin-dashboard',
