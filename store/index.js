@@ -1,4 +1,5 @@
-const URL = "https://jwc-api.mamun.cloud/"
+//const URL = "https://jwc-api.mamun.cloud/"
+const URL = "http://localhost:8001/"
 
 export const state = () => ({
   counter: 0,

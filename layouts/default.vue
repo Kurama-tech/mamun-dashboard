@@ -98,6 +98,13 @@
 <script>
 export default {
   name: 'DefaultLayout',
+  mounted() {
+    if (!this.checkJwtCookie()) {
+    // Cookie named 'jwt' exists
+    // Perform your desired action here
+    this.$router.push('/login');
+  }
+  },
   data () {
     return {
       clipped: true,
@@ -134,7 +141,17 @@ export default {
   methods: {
     logout(){
       this.$store.dispatch("logout")
+    },
+    checkJwtCookie() {
+    const cookies = document.cookie.split(';');
+    for (let i = 0; i < cookies.length; i++) {
+      const cookie = cookies[i].trim();
+      if (cookie.startsWith('jwt=')) {
+        return true;
+      }
     }
+    return false;
+  }
   },
   watch: {
     watch: {
