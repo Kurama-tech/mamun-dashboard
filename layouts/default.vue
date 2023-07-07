@@ -98,13 +98,13 @@
 <script>
 export default {
   name: 'DefaultLayout',
-  mounted() {
+  /* mounted() {
     if (!this.checkJwtCookie()) {
     // Cookie named 'jwt' exists
     // Perform your desired action here
     this.$router.push('/login');
   }
-  },
+  }, */
   data () {
     return {
       clipped: true,

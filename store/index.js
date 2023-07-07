@@ -1,5 +1,5 @@
-//const URL = "https://jwc-api.mamun.cloud/"
-const URL = "http://localhost:8001/"
+const URL = "https://jwc-api.mamun.cloud/"
+//const URL = "http://localhost:8001/"
 
 export const state = () => ({
   counter: 0,
@@ -300,6 +300,7 @@ export const actions = {
       parent: data.parent,
       tables: data.tables
     }
+    console.log(FinalRequest)
 
     try {
       await this.$axios.$put(URL + "items/"+ data.id, FinalRequest).then(async (resp) => {

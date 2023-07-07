@@ -1,6 +1,6 @@
 <template>
   <v-data-table :loading="loading" :headers="headers" :items="items" :single-expand="singleExpand"
-    :expanded.sync="expanded" item-key="name" show-expand sort-by="products" class="elevation-1">
+    :expanded.sync="expanded" item-key="id" show-expand sort-by="products" class="elevation-1">
     <template #top>
       <v-toolbar flat>
         <v-toolbar-title>Products</v-toolbar-title>
@@ -142,7 +142,7 @@
                       v-model="newEditvar.type"></v-select>
                   </v-row>
                   <v-row v-if="newEditvar.type === `Child`">
-                    <v-select :items="parentSelect" label="Select Type" v-model="newEditvar.parent"></v-select>
+                    <v-select :items="parentSelect" label="Select Parent" v-model="newEditvar.parent"></v-select>
                   </v-row>
                   <v-row>
                     <v-alert dense border="left" type="warning">
