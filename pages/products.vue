@@ -1,11 +1,15 @@
 <template>
-  <v-data-table :loading="loading" :headers="headers" :items="items" :single-expand="singleExpand"
+  <v-data-table :search="search" :custom-filter="filterText" :loading="loading" :headers="headers" :items="items" :single-expand="singleExpand"
     :expanded.sync="expanded" item-key="id" show-expand sort-by="products" class="elevation-1">
     <template #top>
       <v-toolbar flat>
         <v-toolbar-title>Products</v-toolbar-title>
         <v-divider class="mx-4" inset vertical />
-        <v-spacer />
+        <v-text-field
+          v-model="search"
+          label="Search"
+          class="mx-4"
+        ></v-text-field>
         <v-dialog fullscreen v-model="dialog" max-width="500px">
           <template #activator="{ on, attrs }">
             <v-btn color="purple lighten-3" class="mb-2" v-bind="attrs" v-on="on">
@@ -253,8 +257,10 @@ import { cloneDeep } from 'lodash'
 
 export default {
   name: 'ProductsPage',
+  
   data: () => ({
     carouselIndex: 0,
+    search: '',
     expanded: [],
     singleExpand: false,
     dialog: false,
@@ -278,6 +284,7 @@ export default {
         text: 'Product',
         align: 'start',
         sortable: true,
+        filterable: true,
         value: 'name'
       },
       { text: 'Tables Attached', align: 'center', value: 'tables' },
@@ -532,7 +539,13 @@ export default {
     },
     removeImg(n) {
       this.newEditvar.images = this.removeItemByIndex(this.newEditvar.images, n)
-    }
+    },
+    filterText (value, search, item) {
+        return value != null &&
+          search != null &&
+          typeof value === 'string' &&
+          value.toString().toLocaleLowerCase().indexOf(search) !== -1
+      },
   }
 }
 </script>

@@ -1,7 +1,7 @@
 version: "3.9"
 services:
   jwcbackend:
-    image: quay.io/kurama/jwc-backend
+    image: quay.io/kurama/jwc-backend:main
     restart: always
     labels:
       - traefik.backend=jwcbackend
