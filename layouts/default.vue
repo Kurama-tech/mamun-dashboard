@@ -118,12 +118,12 @@ export default {
         },
         {
           icon: 'mdi-home-edit',
-          title: 'Users',
+          title: 'Requirements',
           to: '/requirements'
         },
         {
           icon: 'mdi-chart-bubble',
-          title: 'Requirements',
+          title: 'Users',
           to: '/users'
         }
       ],
