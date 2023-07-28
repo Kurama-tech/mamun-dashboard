@@ -77,8 +77,15 @@ export const actions = {
   async getRequirements(context) {
     context.commit("setLoading", true)
     const result = await this.$axios.$get(URL + "requirements")
+    
     if (result != null) {
-      context.commit("setRequirements", result)
+      const newResult = []
+      result.forEach(element => {
+        const foundObject = context.state.users.find(item => item.userid === element.userid);
+        element.user = foundObject
+        newResult.push(element)
+      });
+      context.commit("setRequirements", newResult)
       context.commit("setLoading", false)
     }
     context.commit("setLoading", false)

@@ -40,10 +40,12 @@
                                             v-model="newEditvar.priority"></v-select>
                                     </v-row>
                                     <v-row>
-                                        <v-textarea name="input-7-1" label="Description" v-model="newEditvar.description"></v-textarea>
+                                        <v-textarea name="input-7-1" label="Description"
+                                            v-model="newEditvar.description"></v-textarea>
                                     </v-row>
                                     <v-row>
-                                        <v-textarea name="input-7-1" label="Remarks" v-model="newEditvar.remarks"></v-textarea>
+                                        <v-textarea name="input-7-1" label="Remarks"
+                                            v-model="newEditvar.remarks"></v-textarea>
                                     </v-row>
 
                                 </v-form>
@@ -93,12 +95,20 @@
 
                 <v-list-item two-line>
                     <v-list-item-content>
+                        <v-list-item-title>Name</v-list-item-title>
+                        <v-list-item-subtitle>{{ item.user.name }}</v-list-item-subtitle>
+                    </v-list-item-content>
+                    <v-list-item-content>
                         <v-list-item-title>Description</v-list-item-title>
                         <v-list-item-subtitle>{{ item.description }}</v-list-item-subtitle>
                     </v-list-item-content>
                     <v-list-item-content>
                         <v-list-item-title>Remarks</v-list-item-title>
                         <v-list-item-subtitle>{{ item.remarks }}</v-list-item-subtitle>
+                    </v-list-item-content>
+                    <v-list-item-content>
+                        <v-list-item-title>Contact</v-list-item-title>
+                        <v-list-item-subtitle><a :href="'tel:' + item.contact" >{{ item.user.contact }}</a></v-list-item-subtitle>
                     </v-list-item-content>
 
                 </v-list-item>
@@ -186,6 +196,7 @@ export default {
     methods: {
         initialize() {
             this.$store.commit("setLoading", true)
+            this.$store.dispatch('getItems')
             this.$store.dispatch('getRequirements')
             this.$store.commit("setLoading", false)
         },
@@ -199,6 +210,9 @@ export default {
             this.newEditvar = item
             this.editdailog = true
         },
+
+        
+
 
 
 
