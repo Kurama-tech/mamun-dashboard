@@ -6,15 +6,15 @@
     <v-row>
       <v-col cols="12" sm="6" md="4">
         <v-card elevation="2" shaped color="#CAF1DE" :loading="loading">
-          <v-card-title>Number of Products</v-card-title>
+          <v-card-title>Number of Users</v-card-title>
           <v-card-text>
             <div class="text-h4">
-              {{ totalP }}
+              {{ totalUsers }}
             </div>
           </v-card-text>
         </v-card>
       </v-col>
-      <v-col cols="12" sm="6" md="4">
+      <!-- <v-col cols="12" sm="6" md="4">
         <v-card elevation="2" shaped color="#E1F8DC" :loading="loading">
           <v-card-title>Number of Parents</v-card-title>
           <v-card-text>
@@ -33,13 +33,13 @@
             </div>
           </v-card-text>
         </v-card>
-      </v-col>
+      </v-col> -->
       <v-col cols="12" sm="6" md="4">
         <v-card elevation="2" shaped color="#ACDDDE" :loading="loading">
-          <v-card-title>Number of Tables</v-card-title>
+          <v-card-title>Number of Requirements</v-card-title>
           <v-card-text>
             <div class="text-h4">
-              {{ totalT }}
+              {{ totalReq }}
             </div>
           </v-card-text>
         </v-card>
@@ -68,17 +68,11 @@ export default {
 
   },
   computed: {
-    totalP() {
-      return this.$store.state.products.length
+    totalUsers() {
+      return this.$store.state.users.length
     },
-    totalT() {
-      return this.$store.state.tables.length
-    },
-    NoChilds() {
-      return this.$store.state.NoChilds
-    },
-    NoParents() {
-      return this.$store.state.NoParents
+    totalReq() {
+      return this.$store.state.requirements.length
     },
     loading() {
       return this.$store.state.loading
@@ -88,7 +82,7 @@ export default {
     initialize() {
       this.$store.commit("setLoading", true)
       this.$store.dispatch('getItems')
-      this.$store.dispatch('getTables')
+      this.$store.dispatch('getRequirements')
     },
   }
 }

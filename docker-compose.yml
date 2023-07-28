@@ -1,11 +1,11 @@
 version: "3.9"
 services:
-  jwcbackend:
-    image: quay.io/kurama/jwc-backend:main
+  dumdumbackend:
+    image: quay.io/kurama/jwc-backend:dumdum
     restart: always
     labels:
-      - traefik.backend=jwcbackend
-      - traefik.frontend.rule=Host:backend.jwcindia.com
+      - traefik.backend=dumdumbackend
+      - traefik.frontend.rule=Host:dumdum-backend.mamun.cloud
       - traefik.docker.network=web
       - traefik.port=8001
     networks:

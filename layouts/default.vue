@@ -118,24 +118,19 @@ export default {
         },
         {
           icon: 'mdi-home-edit',
-          title: 'Home Page',
-          to: '/home'
+          title: 'Users',
+          to: '/requirements'
         },
         {
           icon: 'mdi-chart-bubble',
-          title: 'Products',
-          to: '/products'
-        },
-        {
-          icon: 'mdi-table',
-          title: 'Tables',
-          to: '/tables'
+          title: 'Requirements',
+          to: '/users'
         }
       ],
       miniVariant: true,
       right: true,
       rightDrawer: false,
-      title: 'JWC Dashboard'
+      title: 'DumDum Dashboard'
     }
   },
   methods: {
