@@ -125,6 +125,11 @@ export default {
           icon: 'mdi-chart-bubble',
           title: 'Users',
           to: '/users'
+        },
+        {
+          icon: 'mdi-cash-sync',
+          title: 'Payments Profile',
+          to: '/payments'
         }
       ],
       miniVariant: true,

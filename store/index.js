@@ -6,6 +6,7 @@ export const state = () => ({
   loading: false,
   users: [],
   requirements: [],
+  payment: {},
   loggedIn: false,
   showauthErr: false,
   authErr: ''
@@ -23,6 +24,9 @@ export const mutations = {
   },
   setUsers(state, value) {
     state.users = value
+  },
+  setPayment(state,value){
+    state.payment = value
   },
   
   setRequirements(state, value) {
@@ -64,6 +68,12 @@ export const actions = {
     console.log(result)
   },
 
+  async editPayment(context, item){
+    const result = await this.$axios.$post(URL + "updatePayment", item)
+    await context.dispatch("getPaymentsProfile")
+    console.log(result)
+  },
+
   async getItems(context) {
     context.commit("setLoading", true)
     const result = await this.$axios.$get(URL + "users")
@@ -89,5 +99,16 @@ export const actions = {
       context.commit("setLoading", false)
     }
     context.commit("setLoading", false)
+  },
+
+  async getPaymentsProfile(context){
+    context.commit("setLoading", true)
+    const result = await this.$axios.$get(URL + "payment/list/64cf821cb21ffb7da82615f0" )
+    if (result != null) {
+      context.commit("setPayment", result[0])
+      context.commit("setLoading", false)
+    }
+    context.commit("setLoading", false)
+
   }
 }

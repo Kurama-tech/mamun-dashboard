@@ -83,6 +83,7 @@ export default {
       this.$store.commit("setLoading", true)
       this.$store.dispatch('getItems')
       this.$store.dispatch('getRequirements')
+      this.$store.dispatch('getPaymentsProfile')
     },
   }
 }
