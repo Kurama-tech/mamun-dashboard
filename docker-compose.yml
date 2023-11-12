@@ -4,9 +4,9 @@ services:
     image: quay.io/kurama/jwc-backend:dumdum
     restart: always
     labels:
-      - traefik.backend=dumdumbackend
-      - traefik.frontend.rule=Host:dumdum-backend.mamun.cloud
-      - traefik.docker.network=web
+      - traefik.http.routers.blog.rule=Host(`dumdum-backend.mamun.cloud`)
+      - traefik.http.routers.blog.tls=true
+      - traefik.http.routers.blog.tls.certresolver=lets-encrypt
       - traefik.port=8001
     networks:
      - internal
