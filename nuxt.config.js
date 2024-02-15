@@ -2,7 +2,7 @@
 export default {
   // Global page headers: https://go.nuxtjs.dev/config-head
   server: {
-    port: 8001, // Set the port to 8001
+    port: 8004, // Set the port to 8004
     host: '0.0.0.0', // Allow connections from outside the container
   },
   head: {

@@ -1,18 +1,18 @@
 version: "3.9"
 services:
-  jwcbackend:
-    image: quay.io/kurama/jwc-backend:main
+  dumdumbackend:
+    image: quay.io/kurama/jwc-backend:omer
     restart: always
     labels:
-      - traefik.backend=jwcbackend
-      - traefik.frontend.rule=Host:backend.jwcindia.com
-      - traefik.docker.network=web
-      - traefik.port=8001
+      - traefik.http.routers.admin.rule=Host(`hayath.mamun.cloud`)
+      - traefik.http.routers.admin.tls=true
+      - traefik.http.routers.admin.tls.certresolver=lets-encrypt
+      - traefik.port=8004
     networks:
      - internal
      - web
     ports:
-      - "8001:8001"
+      - "8004:8004"
 networks:
  web:
    external: true

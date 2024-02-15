@@ -40,19 +40,13 @@
 
                   <v-textarea outlined v-model="editedItem.description" label="Description" />
                 </v-row>
+
                 <v-row>
                   <v-select :items="productTypes" label="Select Type" v-model="editedItem.type"></v-select>
                 </v-row>
-                <v-row v-if="editedItem.type === `Child`">
-                  <v-select :items="parentSelect" label="Select Type" v-model="editedItem.parent"></v-select>
-                </v-row>
                 <v-row>
                   <v-col cols="12" sm="6" md="4">
-                    <span>Attach tables</span>
-                    <div v-for="table in tables">
-                      <v-checkbox v-model="selectedTables" :label="table.name" :value="table" />
-                    </div>
-
+                    <v-text-field v-model="editedItem.price" label="Price" />
                   </v-col>
                 </v-row>
                 <v-row>
@@ -137,39 +131,14 @@
                     <v-textarea outlined v-model="newEditvar.description" label="Description" />
                   </v-row>
                   <v-row>
-                    <v-alert v-if="lockParent" border="bottom" colored-border type="warning" elevation="2">
-                      Cannot Change Type of parent untill its attached to a Child
-                    </v-alert>
-                  </v-row>
-                  <v-row>
                     <v-select :disabled="lockParent" :items="productTypes" label="Select Type"
                       v-model="newEditvar.type"></v-select>
                   </v-row>
-                  <v-row v-if="newEditvar.type === `Child`">
-                    <v-select :items="parentSelect" label="Select Parent" v-model="newEditvar.parent"></v-select>
-                  </v-row>
                   <v-row>
-                    <v-alert dense border="left" type="warning">
-                      Please Re-attach the <strong>Tables</strong>!
-                    </v-alert>
-                  </v-row>
-                  <v-row>
-                    <v-col cols="12" sm="6" md="4">
-                      <span>Previously Attached tables</span>
-                      <v-list-item v-for="table in newEditvar.tables">
-                        <v-list-item-content>
-                          <v-list-item-title>{{ table.name }}</v-list-item-title>
-                        </v-list-item-content>
-                      </v-list-item>
-                    </v-col>
-                    <v-divider vertical></v-divider>
-                    <v-col cols="12" sm="6" md="4">
-                      <span>Attach New tables</span>
-                      <div v-for="table in editSelectedTables">
-                        <v-checkbox v-model="table.checked" :label="table.name" />
-                      </div>
-                    </v-col>
-                  </v-row>
+                  <v-col cols="12" sm="6" md="4">
+                    <v-text-field v-model="newEditvar.price" label="Price" />
+                  </v-col>
+                </v-row>
                   <v-row>
                     <v-col cols="12" sm="6" md="4">
                       <span>Images Present</span>
@@ -271,6 +240,7 @@ export default {
     selectedFiles: null,
     selectedTables: [],
     editdailog: false,
+    productTypes: ["Clothes", "Jewelry"],
 
 
     headers: [
@@ -287,9 +257,8 @@ export default {
         filterable: true,
         value: 'name'
       },
-      { text: 'Tables Attached', align: 'center', value: 'tables' },
+      { text: 'Price', align: 'center', value: 'price' },
       { text: 'Type', align: 'center', value: 'type' },
-      { text: 'Parent', align: 'center', value: 'parent' },
       { text: 'Status', align: 'center', value: 'status', sortable: false },
       { text: 'Actions', align: 'center', value: 'actions', sortable: false },
       { text: 'Images', align: 'center', value: 'images', sortable: false }
@@ -302,12 +271,10 @@ export default {
 
     editedItem: {
       name: '',
-      tables: 0,
       type: '',
-      parent: '',
+      price: 0,
       description: '',
       status: '',
-      tables: [],
       images: []
     },
     newEditvar: null,
@@ -319,15 +286,6 @@ export default {
     },
     items() {
       return cloneDeep(this.$store.state.products)
-    },
-    tables() {
-      return this.$store.state.tables
-    },
-    productTypes() {
-      return this.$store.state.type
-    },
-    parentSelect() {
-      return this.$store.state.select
     },
     loading() {
       return this.$store.state.loading
@@ -352,31 +310,12 @@ export default {
     initialize() {
       this.$store.commit("setLoading", true)
       this.$store.dispatch('getItems')
-      this.$store.dispatch('getTables')
       this.$store.commit("setLoading", false)
     },
 
     editItem(item) {
       this.newEditvar = item
-      this.lockParent = false
-      //this.selectedTables = item.tables
-      if (item.type === "Parent") {
-        this.items.forEach((val) => {
-          if (val.parent === item.id) {
-            this.lockParent = true
-          }
-        })
-      }
-      let tempTables = []
-      this.tables.forEach((item) => {
-        tempTables.push(
-          {
-            id: item.id,
-            name: item.name
-          }
-        )
-      })
-      this.editSelectedTables = this.mergeArraysIgnoreDuplicates(item.tables, tempTables)
+     
       this.editdailog = true
     },
 
@@ -420,7 +359,7 @@ export default {
     },
 
     save() {
-      if(this.editedItem.description != '' && this.editedItem.name != '' && this.editedItem.type != '' && this.selectedFiles != null && this.selectedFiles.length > 0){
+      if(this.editedItem.price != '' && this.editedItem.description != '' && this.editedItem.name != '' && this.editedItem.type != '' && this.selectedFiles != null && this.selectedFiles.length > 0){
       
       this.errorString = ''
       this.showerror = false
@@ -430,29 +369,20 @@ export default {
         return
       }
       this.$store.commit("setLoading", true)
-      let Tables = []
-      this.selectedTables.forEach((value) => {
-        const item = {
-          name: value.name,
-          id: value.id
-        }
-        Tables.push(item)
-      })
 
       let data = {
         files: this.selectedFiles,
         description: this.editedItem.description,
         name: this.editedItem.name,
         type: this.editedItem.type,
-        parent: this.editedItem.parent,
-        tables: Tables
+        price: this.editedItem.price,
       }
       console.log(data)
       this.$store.dispatch("addItem", data)
       this.close()
       }
       else {
-        this.errorString = `Fields name , type, description , images required!`
+        this.errorString = `Fields name , type, description , images, price required!`
         this.showerror = true
       }
       
@@ -463,26 +393,13 @@ export default {
         this.showerror = true
         return
       }
-      if(this.newEditvar.name != '' && this.newEditvar.description != ''){
+      if(this.newEditvar.name != '' && this.newEditvar.description != '' && this.newEditvar.price != ''){
       this.errorString = ''
       this.showerror = false
-      if(this.newEditvar.type != 'Parent' && this.newEditvar.parent === '') {
-        this.errorString = 'Parent is Required'
-        this.showerror = true
-        return
-      }
+      
 
       this.$store.commit("setLoading", true)
-      let Tables = []
-      this.editSelectedTables.forEach((value) => {
-        if (value.checked === true) {
-          const item = {
-            name: value.name,
-            id: value.id
-          }
-          Tables.push(item)
-        }
-      })
+      
       let data = {
         id: this.newEditvar.id,
         files: this.selectedFiles,
@@ -490,8 +407,7 @@ export default {
         name: this.newEditvar.name,
         type: this.newEditvar.type,
         images: this.newEditvar.images,
-        parent: this.newEditvar.parent,
-        tables: Tables
+        price: this.newEditvar.price,
       }
       console.log(data)
       this.$store.dispatch("editItem", data)

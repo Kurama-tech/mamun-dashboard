@@ -3,7 +3,8 @@ name: Container build & push
 # Controls when the workflow will run
 on:
   push:
-    branches: [main]
+    branches: 
+    - omer
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
@@ -18,7 +19,7 @@ jobs:
         uses: redhat-actions/buildah-build@v2
         with:
           image: jwc-backend
-          tags: main ${{ github.sha }}
+          tags: omer ${{ github.sha }}
           dockerfiles: |
             ./Dockerfile
       - name: Push To quay.io

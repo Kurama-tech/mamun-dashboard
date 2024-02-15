@@ -1,5 +1,5 @@
-const URL = "https://api.jwcindia.com/"
-//const URL = "http://localhost:8001/"
+//const URL = "https://api.jwcindia.com/"
+const URL = "https://omer-api.mamun.cloud/"
 
 export const state = () => ({
   counter: 0,
@@ -7,10 +7,13 @@ export const state = () => ({
   type: ["Parent"],
   loading: false,
   select: [],
-  home: [],
+  customers: [],
   products: [],
+  products_qty: [],
+  payments: [],
   loggedIn: false,
   NoChilds: 0,
+  invoices: [],
   NoParents: 0,
   showauthErr: false,
   authErr: ''
@@ -32,22 +35,22 @@ export const mutations = {
   setTables(state, value) {
     state.tables = value
   },
+  setPayments(state, value) {
+    state.payments = value
+  },
+  setProductsQty(state, value){
+    state.products_qty = value
+  },
   setProducts(state, value) {
-    let counterParent = 0
-    let counterChild = 0
+   
     state.products = value
-    value.forEach((item) =>{
-      if(item.type === "Parent"){
-       
-        counterParent = counterParent + 1
-       
-      }else {
-        counterChild = counterChild + 1
-        
-      }
+    let items_Qty = []
+    value.forEach((item) => {
+      let temp = { id: item.id, name: item.name, description: item.description, price: item.price, images: item.images, type: item.type, status: item.status, qty: 1, totalp: item.price }
+      items_Qty.push(temp)
     })
-    state.NoChilds = counterChild
-    state.NoParents = counterParent
+    state.products_qty = items_Qty
+   
   },
   setType(state, value) {
     state.type = value
@@ -55,28 +58,28 @@ export const mutations = {
   setSelect(state, value) {
     state.select = value
   },
-  setLoading(state, value){
+  setLoading(state, value) {
     state.loading = value
   },
-  setHome(state, value){
-    state.home = value
+  setCustomers(state, value) {
+    state.customers = value
   },
-  setloggedIn(state, value){
+  setInvoices(state, value) {
+    state.invoices = value
+  },
+  setloggedIn(state, value) {
     state.loggedIn = value
   },
-  setshowauthErr(state, value){
+  setshowauthErr(state, value) {
     state.authErr = value.str
     state.showauthErr = value.bool
   },
 }
 
 export const actions = {
-  async fetchCounter({ state, commit }) {
-    // make request
-    const res = { data: 10 };
-    state.counter = res.data;
-    commit("increment")
-    return res.data;
+
+  setEditDataInv(context,data){
+    context.commit("setProductsQty", data)
   },
 
   async addTable(context, data) {
@@ -84,29 +87,29 @@ export const actions = {
     await context.dispatch("getTables")
     console.log(result)
   },
-  async login(context, data){
+  async login(context, data) {
     context.commit("setLoading", true)
     try {
       const result = await this.$axios.post(URL + "login", data, {
         withCredentials: true
       })
-      if(result.status == 200){
-        context.commit("setshowauthErr", {str: "", bool: false})
+      if (result.status == 200) {
+        context.commit("setshowauthErr", { str: "", bool: false })
         context.commit("setloggedIn", true)
         context.commit("setLoading", false)
         this.$router.push('/')
       }
-      else{
-        context.commit("setshowauthErr", {str: "Invalid creds/ Unauthorized", bool: true})
+      else {
+        context.commit("setshowauthErr", { str: "Invalid creds/ Unauthorized", bool: true })
         context.commit("setLoading", false)
       }
     } catch (error) {
-      context.commit("setshowauthErr", {str: "Invalid creds/ Unauthorized", bool: true})
+      context.commit("setshowauthErr", { str: "Invalid creds/ Unauthorized", bool: true })
       context.commit("setLoading", false)
     }
-    
+
   },
-  logout(context){
+  logout(context) {
     document.cookie = 'jwt=; expires=Thu, 01 Jan 1970 00:00:00 UTC;'
 
     // Optional: Perform any additional cleanup or state updates here
@@ -120,19 +123,24 @@ export const actions = {
       context.commit("setTables", result)
     }
   },
-  async deleteTable(context, id) {
-    const result = await this.$axios.$delete(URL + "tables/" + id)
-    await context.dispatch("getTables")
-    console.log(result)
-  },
   async deleteItem(context, id) {
     const result = await this.$axios.$delete(URL + "items/" + id)
     await context.dispatch("getItems")
     console.log(result)
   },
-  async deleteHomeItem(context, id) {
-    const result = await this.$axios.$delete(URL + "home/" + id)
-    await context.dispatch("getHomeItems")
+  async deleteCustomer(context, id) {
+    const result = await this.$axios.$delete(URL + "customer/" + id)
+    await context.dispatch("getCustomers")
+    console.log(result)
+  },
+  async revertPayment(context, id) {
+    const result = await this.$axios.$delete(URL + "payments/revert/" + id)
+    await context.dispatch("getPayments")
+    console.log(result)
+  },
+  async deleteInvoice(context, id) {
+    const result = await this.$axios.$delete(URL + "invoices/" + id)
+    await context.dispatch("getInvoices")
     console.log(result)
   },
   async disableItem(context, id) {
@@ -143,6 +151,22 @@ export const actions = {
   async enableItem(context, id) {
     const result = await this.$axios.$get(URL + "items/enabled/" + id)
     await context.dispatch("getItems")
+    console.log(result)
+  },
+
+  async setInvoiceStatus(context, data) {
+    const result = await this.$axios.$get(URL + "invoices/status/" + data.id + "/" + data.status )
+    await context.dispatch("getInvoices")
+    console.log(result)
+  },
+  async disableCustomer(context, id) {
+    const result = await this.$axios.$delete(URL + "customer/disabled/" + id)
+    await context.dispatch("getCustomers")
+    console.log(result)
+  },
+  async enableCustomer(context, id) {
+    const result = await this.$axios.$get(URL + "customer/enabled/" + id)
+    await context.dispatch("getCustomers")
     console.log(result)
   },
 
@@ -175,14 +199,38 @@ export const actions = {
     context.commit("setLoading", false)
   },
 
-  async getHomeItems(context) {
+  async getPayments(context) {
     context.commit("setLoading", true)
-    const result = await this.$axios.$get(URL + "home")
+    const result = await this.$axios.$get(URL + "payments")
     if (result != null) {
-      context.commit("setHome", result)
+      context.commit("setPayments", result)
       context.commit("setLoading", false)
-    }else {
-      context.commit("setHome", [])
+    } else {
+      context.commit("setPayments", [])
+    }
+    context.commit("setLoading", false)
+  },
+
+  async getCustomers(context) {
+    context.commit("setLoading", true)
+    const result = await this.$axios.$get(URL + "customers")
+    if (result != null) {
+      context.commit("setCustomers", result)
+      context.commit("setLoading", false)
+    } else {
+      context.commit("setCustomers", [])
+    }
+    context.commit("setLoading", false)
+  },
+
+  async getInvoices(context) {
+    context.commit("setLoading", true)
+    const result = await this.$axios.$get(URL + "invoices")
+    if (result != null) {
+      context.commit("setInvoices", result)
+      context.commit("setLoading", false)
+    } else {
+      context.commit("setInvoices", [])
     }
     context.commit("setLoading", false)
   },
@@ -208,8 +256,8 @@ export const actions = {
           images: response,
           status: "active",
           type: data.type,
-          parent: data.parent,
-          tables: data.tables
+          price: Number(data.price),
+
         }
 
         await this.$axios.$post(URL + "items", FinalRequest).then(async (resp) => {
@@ -228,34 +276,91 @@ export const actions = {
   },
 
 
-  async addHomeItem(context, data) {
+  async addCustomer(context, data) {
     context.commit("setLoading", true)
-    const formData = new FormData();
-    
-    formData.append('files', data.files);
-    
-    console.log(formData)
     try {
-      const response = await this.$axios.$post(URL + "upload", formData, {
-        headers: {
-          'Content-Type': 'multipart/form-data'
-        }
-      })
-      if (response != null) {
-        console.log(response)
-        let FinalRequest = {
-          name: data.name,
-          url: response[0]
-        }
 
-        await this.$axios.$post(URL + "home", FinalRequest).then(async (resp) => {
-          context.commit("setLoading", false)
-          await context.dispatch("getHomeItems")
-        }).catch((error) => {
-          throw error
-        })
-
+      let FinalRequest = {
+        "name": data.name,
+        "careof": data.careof,
+        "number": Number(data.number),
+        "address": data.address,
+        "balance": Number(data.balance),
+        "dueday": Number(data.dueday),
+        "description": data.description,
+        "status": "active",
+        "monthlypayf": Number(data.monthlypayf),
+        "monthlypayr": Number(data.monthlypayr)
       }
+
+      await this.$axios.$post(URL + "customer", FinalRequest).then(async (resp) => {
+        context.commit("setLoading", false)
+        await context.dispatch("getCustomers")
+      }).catch((error) => {
+        throw error
+      })
+    } catch (error) {
+      // Handle error
+      context.commit("setLoading", false)
+      console.error(error);
+    }
+  },
+
+  async addInvoice(context, data) {
+    context.commit("setLoading", true)
+    try {
+
+      let FinalRequest = data
+      FinalRequest.status = "Due"
+
+      await this.$axios.$post(URL + "invoices", FinalRequest).then(async (resp) => {
+        context.commit("setLoading", false)
+        await context.dispatch("getInvoices")
+        await context.dispatch("getCustomers")
+      }).catch((error) => {
+        throw error
+      })
+    } catch (error) {
+      // Handle error
+      context.commit("setLoading", false)
+      console.error(error);
+    }
+  },
+
+  async addPayments(context, data) {
+    context.commit("setLoading", true)
+    try {
+
+      let FinalRequest = data
+
+      await this.$axios.$post(URL + "payment/capture", FinalRequest).then(async (resp) => {
+        context.commit("setLoading", false)
+        await context.dispatch("getPayments")
+        await context.dispatch("getCustomers")
+
+      }).catch((error) => {
+        throw error
+      })
+    } catch (error) {
+      // Handle error
+      context.commit("setLoading", false)
+      console.error(error);
+    }
+  },
+
+  async addPaymentsInvoice(context, data) {
+    context.commit("setLoading", true)
+    try {
+
+      let FinalRequest = data
+
+      await this.$axios.$post(URL + "payment/capture/"+ data.invoiceId, FinalRequest).then(async (resp) => {
+        context.commit("setLoading", false)
+        await context.dispatch("getPayments")
+        await context.dispatch("getInvoices")
+      }).catch((error) => {
+        throw error
+      })
     } catch (error) {
       // Handle error
       context.commit("setLoading", false)
@@ -277,11 +382,12 @@ export const actions = {
         const response = await this.$axios.$post(URL + "upload", formData, {
           headers: {
             'Content-Type': 'multipart/form-data'
-          }})
-          if (response != null) {
-            imgMerge = response
           }
-      }  catch (error) {
+        })
+        if (response != null) {
+          imgMerge = response
+        }
+      } catch (error) {
         // Handle error
         context.commit("setLoading", false)
         console.error(error);
@@ -289,6 +395,7 @@ export const actions = {
     }
 
     const finalImages = data.images.concat(imgMerge);
+    console.log(finalImages)
 
     let FinalRequest = {
       id: data.id,
@@ -297,14 +404,88 @@ export const actions = {
       images: finalImages,
       status: "active",
       type: data.type,
-      parent: data.parent,
-      tables: data.tables
+      price: data.price,
+
     }
     console.log(FinalRequest)
 
     try {
-      await this.$axios.$put(URL + "items/"+ data.id, FinalRequest).then(async (resp) => {
+      await this.$axios.$put(URL + "items/" + data.id, FinalRequest).then(async (resp) => {
         await context.dispatch("getItems")
+        context.commit("setLoading", false)
+      }).catch((error) => {
+        context.commit("setLoading", false)
+        throw error
+      })
+
+    } catch (error) {
+      // Handle error
+      context.commit("setLoading", false)
+      console.error(error);
+    }
+  },
+
+  async editCustomer(context, data) {
+    context.commit("setLoading", true)
+    let FinalRequest = {
+      id: data.id,
+      name: data.name,
+      careof: data.careof,
+      number: Number(data.number),
+      address: data.address,
+      balance: Number(data.balance),
+      dueday: Number(data.dueday),
+      description: data.description,
+      status: "active",
+      monthlypayf: Number(data.monthlypayf),
+      monthlypayr: Number(data.monthlypayr)
+
+    }
+
+    try {
+      await this.$axios.$put(URL + "customer/" + data.id, FinalRequest).then(async (resp) => {
+        await context.dispatch("getCustomers")
+        context.commit("setLoading", false)
+      }).catch((error) => {
+        context.commit("setLoading", false)
+        throw error
+      })
+
+    } catch (error) {
+      // Handle error
+      context.commit("setLoading", false)
+      console.error(error);
+    }
+  },
+
+  async editInvoice(context, data) {
+    context.commit("setLoading", true)
+    let FinalRequest = data
+    FinalRequest.status = 'Due'
+
+    try {
+      await this.$axios.$put(URL + "invoices/" + data.id, FinalRequest).then(async (resp) => {
+        await context.dispatch("getInvoices")
+        context.commit("setLoading", false)
+      }).catch((error) => {
+        context.commit("setLoading", false)
+        throw error
+      })
+
+    } catch (error) {
+      // Handle error
+      context.commit("setLoading", false)
+      console.error(error);
+    }
+  },
+
+  async editPayment(context, data) {
+    context.commit("setLoading", true)
+    let FinalRequest = data
+
+    try {
+      await this.$axios.$put(URL + "payments/" + data.id, FinalRequest).then(async (resp) => {
+        await context.dispatch("getPayments")
         context.commit("setLoading", false)
       }).catch((error) => {
         context.commit("setLoading", false)

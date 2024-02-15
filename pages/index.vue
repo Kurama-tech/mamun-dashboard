@@ -16,30 +16,30 @@
       </v-col>
       <v-col cols="12" sm="6" md="4">
         <v-card elevation="2" shaped color="#E1F8DC" :loading="loading">
-          <v-card-title>Number of Parents</v-card-title>
+          <v-card-title>Number of Customers</v-card-title>
           <v-card-text>
             <div class="text-h4">
-              {{ NoParents }}
+              {{ totalC }}
             </div>
           </v-card-text>
         </v-card>
       </v-col>
       <v-col cols="12" sm="6" md="4">
         <v-card elevation="2" shaped color="#FFE7C7" :loading="loading">
-          <v-card-title>Number of Childs</v-card-title>
+          <v-card-title>Number of Invoices</v-card-title>
           <v-card-text>
             <div class="text-h4">
-              {{ NoChilds }}
+              {{ NoInvoices }}
             </div>
           </v-card-text>
         </v-card>
       </v-col>
       <v-col cols="12" sm="6" md="4">
         <v-card elevation="2" shaped color="#ACDDDE" :loading="loading">
-          <v-card-title>Number of Tables</v-card-title>
+          <v-card-title>Total Balance</v-card-title>
           <v-card-text>
             <div class="text-h4">
-              {{ totalT }}
+              {{ BalanceT }}
             </div>
           </v-card-text>
         </v-card>
@@ -49,6 +49,7 @@
 </template>
 
 <script>
+import { cloneDeep } from 'lodash'
 export default {
   name: 'IndexPage',
   data: () => ({
@@ -71,14 +72,19 @@ export default {
     totalP() {
       return this.$store.state.products.length
     },
-    totalT() {
-      return this.$store.state.tables.length
+    totalC() {
+      return this.$store.state.customers.length
     },
-    NoChilds() {
-      return this.$store.state.NoChilds
+    NoInvoices() {
+      return this.$store.state.invoices.length
     },
-    NoParents() {
-      return this.$store.state.NoParents
+    BalanceT() {
+      let temp = cloneDeep(this.$store.state.customers)
+      let balance = 0
+      temp.forEach((item)=> {
+        balance = balance + item.balance
+      })
+      return balance
     },
     loading() {
       return this.$store.state.loading
@@ -88,7 +94,8 @@ export default {
     initialize() {
       this.$store.commit("setLoading", true)
       this.$store.dispatch('getItems')
-      this.$store.dispatch('getTables')
+      this.$store.dispatch('getInvoices')
+      this.$store.dispatch('getCustomers')
     },
   }
 }

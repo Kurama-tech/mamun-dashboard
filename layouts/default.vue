@@ -117,8 +117,8 @@ export default {
           to: '/'
         },
         {
-          icon: 'mdi-home-edit',
-          title: 'Home Page',
+          icon: 'mdi-account',
+          title: 'Customers',
           to: '/home'
         },
         {
@@ -127,15 +127,20 @@ export default {
           to: '/products'
         },
         {
-          icon: 'mdi-table',
-          title: 'Tables',
-          to: '/tables'
+          icon: 'mdi-invoice-text-fast',
+          title: 'Invoice',
+          to: '/invoice'
+        },
+        {
+          icon: 'mdi-cash',
+          title: 'Payments',
+          to: '/payments'
         }
       ],
       miniVariant: true,
       right: true,
       rightDrawer: false,
-      title: 'JWC Dashboard'
+      title: 'Hayath Collections'
     }
   },
   methods: {
