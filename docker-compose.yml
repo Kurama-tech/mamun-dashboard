@@ -9,12 +9,9 @@ services:
       - traefik.http.routers.admin.tls.certresolver=lets-encrypt
       - traefik.port=8004
     networks:
-     - internal
      - web
     ports:
       - "8004:8004"
 networks:
  web:
    external: true
- internal:
-   external: false
