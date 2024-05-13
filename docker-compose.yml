@@ -4,9 +4,9 @@ services:
     image: quay.io/kurama/jwc-backend:main
     restart: always
     labels:
-      - traefik.backend=jwcbackend
-      - traefik.frontend.rule=Host:backend.jwcindia.com
-      - traefik.docker.network=web
+      - traefik.http.routers.admin.rule=Host(`backend.jwcindia.com`)
+      - traefik.http.routers.admin.tls=true
+      - traefik.http.routers.admin.tls.certresolver=lets-encrypt
       - traefik.port=8001
     networks:
      - internal
