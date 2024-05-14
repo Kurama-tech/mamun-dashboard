@@ -1,4 +1,4 @@
-const URL = "https://dumdum-api.mamun.cloud/api/"
+const URL = "https://dumdum-api.mamun.app/api/"
 //const URL = "http://localhost:8001/"
 
 export const state = () => ({
