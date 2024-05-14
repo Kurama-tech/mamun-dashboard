@@ -1,4 +1,4 @@
-const URL = "https://api.jwcindia.com/"
+const URL = "https://jwcapi.mamun.app/"
 //const URL = "http://localhost:8001/"
 
 export const state = () => ({
