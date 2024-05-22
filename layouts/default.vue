@@ -135,7 +135,7 @@ export default {
       miniVariant: true,
       right: true,
       rightDrawer: false,
-      title: 'DumDum Dashboard'
+      title: 'AppTech Marketing'
     }
   },
   methods: {
